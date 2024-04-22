@@ -1,0 +1,4 @@
+Device ID	Device Name	Device Platform
+00008101-0004718c0210001e	fadi@safarway.com - iPhone 12	ios
+fe41d563ad6df11b859ce5979c75d3c726cb0d2c	safarway.user@gmail.com - iPhone 8	ios
+00008101-001601893409001e	azraiq@safarway.com - iPhone 12 Pro Max	ios

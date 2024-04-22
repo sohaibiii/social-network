@@ -1,0 +1,10 @@
+export const BAD_REQUEST_ERROR = 400;
+export const RESOURCE_NOT_FOUND_ERROR = 404;
+export const ACCESS_DENIED_ERROR = 403;
+export const UNAUTHENTICATION_ERROR = 401;
+export const LOCKED_ERROR = 423;
+export const CONFLICT_ERROR = 409;
+export const SERVICE_UNAVAILABLE_ERROR = 503;
+export const BAD_GATEWAY_ERROR = 502;
+export const INTERNAL_SERVER_ERROR = 500;
+export const NOT_IMPLEMENTED_SERVER_ERROR = 501;

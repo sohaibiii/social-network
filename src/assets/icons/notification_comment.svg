@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Notifications" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-4">
+            <g id="Rectangle-2" transform="translate(0.000000, -0.000000)" fill="#5CC3EE" fill-rule="nonzero">
+                <rect id="Rectangle" x="0" y="0" width="24" height="24" rx="12"></rect>
+            </g>
+            <path d="M6,6.5 C5.17157288,6.5 4.5,7.17157288 4.5,8 L4.5,17.1399164 C4.5,17.5075063 4.63497806,17.8622996 4.87930772,18.1369364 C5.42994664,18.7558776 6.37807871,18.8112476 6.99701997,18.2606087 L8.239786,17.1549862 L17.5905648,17.1896554 C17.5933455,17.1896639 17.5933455,17.1896639 17.5961262,17.1896657 C18.4245533,17.1896657 19.0961262,16.5180928 19.0961262,15.6896657 L19.0961262,8 C19.0961262,7.17157288 18.4245533,6.5 17.5961262,6.5 L6,6.5 Z"
+                  id="comment" stroke="#FFFFFF"
+                  transform="translate(11.798063, 13.000000) scale(-1, 1) translate(-11.798063, -13.000000) "></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Group 8</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Notifications" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-8" fill-rule="nonzero">
+            <g id="Rectangle-2-Copy" fill="#5CC3EE">
+                <rect id="Rectangle" x="0" y="0" width="24" height="24" rx="12"></rect>
+            </g>
+            <path d="M20.5555556,10.9952568 L14.0909661,4 L14.0909661,8.17349696 L12.7165392,8.17349696 C8.4547594,8.17349696 5,11.5827038 5,15.7882902 L5,18 L5.6104872,17.3398248 C7.68607245,15.0956743 10.6229146,13.8170168 13.7019348,13.8170168 L14.0909661,13.8170168 L14.0909661,17.9905137 L20.5555556,10.9952568 Z"
+                  id="share" stroke="#FFFFFF" stroke-linejoin="round"></path>
+        </g>
+    </g>
+</svg>

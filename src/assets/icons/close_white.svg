@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>icons2/16/close</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icons2/16/close" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group"
+           transform="translate(8.000000, 8.000000) rotate(-315.000000) translate(-8.000000, -8.000000) translate(-2.000000, -2.000000)"
+           fill="#fff" fill-rule="nonzero">
+            <path d="M9.60050506,1 L9.60050506,19 C9.60050506,19.2761424 9.82436269,19.5 10.1005051,19.5 C10.3766474,19.5 10.6005051,19.2761424 10.6005051,19 L10.6005051,1 C10.6005051,0.723857625 10.3766474,0.5 10.1005051,0.5 C9.82436269,0.5 9.60050506,0.723857625 9.60050506,1 Z"
+                  id="Path"></path>
+            <path d="M18.6005051,9.5 L0.600505063,9.5 C0.324362688,9.5 0.100505063,9.72385763 0.100505063,10 C0.100505063,10.2761424 0.324362688,10.5 0.600505063,10.5 L18.6005051,10.5 C18.8766474,10.5 19.1005051,10.2761424 19.1005051,10 C19.1005051,9.72385763 18.8766474,9.5 18.6005051,9.5 Z"
+                  id="Path"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,18 @@
+diff --git a/node_modules/react-native-bootsplash/android/src/main/java/com/zoontek/rnbootsplash/RNBootSplash.java b/node_modules/react-native-bootsplash/android/src/main/java/com/zoontek/rnbootsplash/RNBootSplash.java
+index ffc55f7..c5f5004 100644
+--- a/node_modules/react-native-bootsplash/android/src/main/java/com/zoontek/rnbootsplash/RNBootSplash.java
++++ b/node_modules/react-native-bootsplash/android/src/main/java/com/zoontek/rnbootsplash/RNBootSplash.java
+@@ -4,10 +4,13 @@ import android.app.Activity;
+ 
+ import androidx.annotation.NonNull;
+ import androidx.annotation.StyleRes;
++import android.view.WindowManager;
++import android.graphics.Color;
+ 
+ public class RNBootSplash {
+ 
+   public static void init(@NonNull final Activity activity, @StyleRes int themeResId) {
+     RNBootSplashModuleImpl.init(activity, themeResId);
++    activity.getWindow().setStatusBarColor(Color.argb(0,0,0,0));
+   }
+ }

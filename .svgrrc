@@ -1,0 +1,6 @@
+{
+  "replaceAttrValues": {
+    "@startColor": "{props.startColor}",
+    "@endColor": "{props.endColor}",
+  }
+}

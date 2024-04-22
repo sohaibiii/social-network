@@ -1,0 +1,319 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+fastlane_require 'dotenv'
+
+default_platform(:ios)
+
+platform :ios do
+
+  before_all do
+    setup_circle_ci
+  end
+
+  desc "set project to version number"
+  lane :setVersionNumber do
+    increment_version_number(
+      version_number: "6.3.3" # Set a specific version number
+    )
+  end
+
+  desc "bump version number"
+  lane :bumpVersion do
+    increment_build_number(xcodeproj: "SafarWay.xcodeproj")
+  end
+
+  desc "set build number"
+  lane :setBuildNumber do
+    increment_build_number(build_number:12)
+  end
+
+  desc "Push a new development build to Firebase App Distribution"
+  lane :buildDev do |options|
+    increment_build_number(build_number: options[:build_number])
+    match(type: "adhoc", app_identifier: "com.safarway.dev", readonly: true)
+    match(type: "development", app_identifier: "com.safarway.dev", readonly: true)
+    match(type: "adhoc", app_identifier: "com.safarway.app", readonly: true)
+    match(type: "appstore", app_identifier: "com.safarway.app", readonly: true)
+
+    build_app(workspace: "SafarWay.xcworkspace",
+      scheme: "Dev",
+      # configuration: "Debug",
+      clean: true,
+      export_method: "ad-hoc",
+      export_options: {
+        provisioningProfiles: {
+          "com.safarway.dev"  => "match AdHoc com.safarway.dev"
+        }
+      },
+      build_path: "./builds",
+      output_directory: "./builds"
+    )
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      groups: ENV["FIREBASE_GROUPS"],
+      release_notes:  ENV["FIREBASE_RELEASE_NOTES"]
+    )
+  end
+
+  desc "Push a new Stage build to Firebase App Distribution"
+  lane :buildStage do |options|
+    increment_build_number(build_number: options[:build_number])
+    match(type: "adhoc", app_identifier: "com.safarway.app", readonly: true)
+    match(type: "appstore", app_identifier: "com.safarway.app", readonly: true)
+
+    build_app(workspace: "SafarWay.xcworkspace",
+      scheme: "Stage",
+      configuration: "Stage",
+      clean: true,
+      export_method: "ad-hoc",
+      export_options: {
+        provisioningProfiles: {
+          "com.safarway.app"  => "match AdHoc com.safarway.app"
+        }
+      },
+      build_path: "./builds",
+      output_directory: "./builds"
+    )
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      groups: ENV["FIREBASE_GROUPS"],
+      release_notes:  ENV["FIREBASE_RELEASE_NOTES"]
+    )
+  end
+
+  desc "Push a new production patch release to TestFlight"
+    lane :buildProductionPatch do |options|
+
+    api_key = app_store_connect_api_key(
+      key_id: "7FQFS4ZKKH",
+      issuer_id: "ac11c23e-4ed2-4a3c-9193-7a7d64fc9dd1",
+      key_filepath: "./fastlane/AuthKey_7FQFS4ZKKH.p8",
+      duration: 1200, # optional (maximum 1200)
+      in_house: false # optional but may be required if using match/sigh
+    )
+    previous_build_number = latest_testflight_build_number(
+      app_identifier: "com.safarway.app",
+      api_key: api_key,
+    )
+
+    current_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
+    #set version to latest live
+    increment_build_number(build_number: previous_build_number)
+    increment_version_number(
+      version_number: current_version # Set a specific version number
+    )
+
+    current_build_number = previous_build_number + 1
+    increment_version_number(
+      bump_type: "patch" # Automatically increment patch version number
+    )
+    increment_build_number(build_number: current_build_number)
+
+    match(type: "adhoc", app_identifier: "com.safarway.app", readonly: true)
+    match(type: "appstore", app_identifier: "com.safarway.app", readonly: true)
+
+    build_app(workspace: "SafarWay.xcworkspace",
+      scheme: "Prod",
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.safarway.app"  => "match AppStore com.safarway.app"
+        }
+      },
+      build_path: "./builds",
+      output_directory: "./builds"
+    )
+    upload_to_testflight(api_key: api_key)
+  end
+
+  desc "Push a new production minor release to TestFlight"
+    lane :buildProductionMinor do |options|
+
+    api_key = app_store_connect_api_key(
+      key_id: "7FQFS4ZKKH",
+      issuer_id: "ac11c23e-4ed2-4a3c-9193-7a7d64fc9dd1",
+      key_filepath: "./fastlane/AuthKey_7FQFS4ZKKH.p8",
+      duration: 1200, # optional (maximum 1200)
+      in_house: false # optional but may be required if using match/sigh
+    )
+    previous_build_number = latest_testflight_build_number(
+      app_identifier: "com.safarway.app",
+      api_key: api_key,
+    )
+
+    current_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
+    #set version to latest live
+    increment_build_number(build_number: previous_build_number)
+    increment_version_number(
+      version_number: current_version # Set a specific version number
+    )
+
+    current_build_number = previous_build_number + 1
+    increment_version_number(
+      bump_type: "minor" # Automatically increment patch version number
+    )
+    increment_build_number(build_number: current_build_number)
+
+    match(type: "adhoc", app_identifier: "com.safarway.app", readonly: true)
+    match(type: "appstore", app_identifier: "com.safarway.app", readonly: true)
+
+    build_app(workspace: "SafarWay.xcworkspace",
+      scheme: "Prod",
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.safarway.app"  => "match AppStore com.safarway.app"
+        }
+      },
+      build_path: "./builds",
+      output_directory: "./builds"
+    )
+    upload_to_testflight(api_key: api_key)
+  end
+
+  desc "Push a new production Major release to TestFlight"
+    lane :buildProductionMajor do |options|
+
+    api_key = app_store_connect_api_key(
+      key_id: "7FQFS4ZKKH",
+      issuer_id: "ac11c23e-4ed2-4a3c-9193-7a7d64fc9dd1",
+      key_filepath: "./fastlane/AuthKey_7FQFS4ZKKH.p8",
+      duration: 1200, # optional (maximum 1200)
+      in_house: false # optional but may be required if using match/sigh
+    )
+    previous_build_number = latest_testflight_build_number(
+      app_identifier: "com.safarway.app",
+      api_key: api_key,
+    )
+
+    current_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
+    #set version to latest live
+    increment_build_number(build_number: previous_build_number)
+    increment_version_number(
+      version_number: current_version # Set a specific version number
+    )
+
+    current_build_number = previous_build_number + 1
+    increment_version_number(
+      bump_type: "major" # Automatically increment patch version number
+    )
+    increment_build_number(build_number: current_build_number)
+
+    match(type: "adhoc", app_identifier: "com.safarway.app", readonly: true)
+    match(type: "appstore", app_identifier: "com.safarway.app", readonly: true)
+
+    build_app(workspace: "SafarWay.xcworkspace",
+      scheme: "Prod",
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.safarway.app"  => "match AppStore com.safarway.app"
+        }
+      },
+      build_path: "./builds",
+      output_directory: "./builds"
+    )
+    upload_to_testflight(api_key: api_key)
+  end
+
+  desc "Push a new production build that bump version number and release to TestFlight"
+    lane :buildBumpCurrentVersion do |options|
+
+    api_key = app_store_connect_api_key(
+      key_id: "7FQFS4ZKKH",
+      issuer_id: "ac11c23e-4ed2-4a3c-9193-7a7d64fc9dd1",
+      key_filepath: "./fastlane/AuthKey_7FQFS4ZKKH.p8",
+      duration: 1200, # optional (maximum 1200)
+      in_house: false # optional but may be required if using match/sigh
+    )
+    previous_build_number = latest_testflight_build_number(
+      app_identifier: "com.safarway.app",
+      api_key: api_key,
+    )
+
+    current_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
+    #set version to latest live
+    increment_build_number(build_number: previous_build_number)
+    increment_version_number(
+      version_number: current_version # Set a specific version number
+    )
+
+    current_build_number = previous_build_number + 1
+
+    increment_build_number(build_number: current_build_number)
+
+    match(type: "adhoc", app_identifier: "com.safarway.app", readonly: true)
+    match(type: "appstore", app_identifier: "com.safarway.app", readonly: true)
+
+    build_app(workspace: "SafarWay.xcworkspace",
+      scheme: "Prod",
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.safarway.app"  => "match AppStore com.safarway.app"
+        }
+      },
+      build_path: "./builds",
+      output_directory: "./builds"
+    )
+    upload_to_testflight(api_key: api_key)
+  end
+
+
+  lane :createAndSignNotificationProfile do
+    produce(
+        app_identifier: "com.safarway.app.NotificationService",
+        app_name: "AppCenter Notifications Production",
+        skip_itc: true
+    )
+    match(
+      app_identifier: ["com.safarway.app.NotificationService"],
+      type: "adhoc",
+    )
+    match(
+      app_identifier: ["com.safarway.app.NotificationService"],
+      type: "appstore",
+    )
+   end
+
+  lane :registerUDID do
+    register_devices(devices_file: "./fastlane/tester-udids.txt")
+    match(type: "adhoc", force_for_new_devices: true)
+  end
+
+  lane :registerDevice do
+    register_devices(
+      devices: {
+        'iPhone' => '64492c5a35196d89f1da9061352535a739f5aa52',
+      }
+    )
+    match(type: "development", force_for_new_devices: true)
+  end
+
+
+
+  lane :generateDevAdhoc do
+    match(type: "adhoc", app_identifier: "com.safarway.dev")
+  end
+
+end

@@ -1,0 +1,16 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:colorEdgeEffect">@color/white</item>
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+    <!-- Add the following lines (BootTheme should inherit from AppTheme) -->
+    <style name="BootTheme" parent="AppTheme">
+        <!-- set the generated bootsplash.xml drawable as activity background -->
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/bootsplash_logo_icon</item>
+        <item name="windowSplashScreenBackground">@color/bootsplash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/bootsplash_logo</item>
+        <item name="android:windowBackground">@drawable/bootsplash</item>
+    </style>
+</resources>

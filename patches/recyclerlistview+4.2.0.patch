@@ -1,0 +1,141 @@
+diff --git a/node_modules/recyclerlistview/dist/reactnative/core/RecyclerListView.js b/node_modules/recyclerlistview/dist/reactnative/core/RecyclerListView.js
+index a98072e..8404cb3 100644
+--- a/node_modules/recyclerlistview/dist/reactnative/core/RecyclerListView.js
++++ b/node_modules/recyclerlistview/dist/reactnative/core/RecyclerListView.js
+@@ -192,7 +192,7 @@ var RecyclerListView = /** @class */ (function (_super) {
+             _this._pendingScrollToOffset = offset;
+         }, function (index) {
+             return _this.props.dataProvider.getStableId(index);
+-        }, !props.disableRecycling);
++        }, !props.disableRecycling, props.dataProvider.getSize());
+         if (_this.props.windowCorrectionConfig) {
+             var windowCorrection = void 0;
+             if (_this.props.windowCorrectionConfig.value) {
+diff --git a/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.d.ts b/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.d.ts
+index e44ed1c..f53df62 100644
+--- a/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.d.ts
++++ b/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.d.ts
+@@ -33,7 +33,7 @@ export default class ViewabilityTracker {
+     private _layouts;
+     private _actualOffset;
+     private _defaultCorrection;
+-    constructor(renderAheadOffset: number, initialOffset: number);
++    constructor(renderAheadOffset: number, initialOffset: number, itemsCount: number);
+     init(windowCorrection: WindowCorrection): void;
+     setLayouts(layouts: Layout[], maxOffset: number): void;
+     setDimensions(dimension: Dimension, isHorizontal: boolean): void;
+diff --git a/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.js b/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.js
+index efe1f09..dec25cd 100644
+--- a/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.js
++++ b/node_modules/recyclerlistview/dist/reactnative/core/ViewabilityTracker.js
+@@ -1,8 +1,10 @@
+ "use strict";
++import { I18nManager, Platform } from "react-native";
++
+ Object.defineProperty(exports, "__esModule", { value: true });
+ var BinarySearch_1 = require("../utils/BinarySearch");
+ var ViewabilityTracker = /** @class */ (function () {
+-    function ViewabilityTracker(renderAheadOffset, initialOffset) {
++    function ViewabilityTracker(renderAheadOffset, initialOffset, itemsCount) {
+         var _this = this;
+         this._layouts = [];
+         this._valueExtractorForBinarySearch = function (index) {
+@@ -24,6 +26,7 @@ var ViewabilityTracker = /** @class */ (function () {
+         this.onEngagedRowsChanged = null;
+         this._relevantDim = { start: 0, end: 0 };
+         this._defaultCorrection = { startCorrection: 0, endCorrection: 0, windowShift: 0 };
++        this._itemsCount = itemsCount;
+     }
+     ViewabilityTracker.prototype.init = function (windowCorrection) {
+         this._doInitialFit(this._currentOffset, windowCorrection);
+@@ -182,25 +185,29 @@ var ViewabilityTracker = /** @class */ (function () {
+     ViewabilityTracker.prototype._checkIntersectionAndReport = function (index, insertOnTop, relevantDim, newVisibleIndexes, newEngagedIndexes) {
+         var itemRect = this._layouts[index];
+         var isFound = false;
++        var newIndex =
++            I18nManager.isRTL && Platform.OS === "android"
++                ? this._itemsCount - 1 - index
++                : index;
+         this._setRelevantBounds(itemRect, relevantDim);
+         if (this._itemIntersectsVisibleWindow(relevantDim.start, relevantDim.end)) {
+             if (insertOnTop) {
+-                newVisibleIndexes.splice(0, 0, index);
+-                newEngagedIndexes.splice(0, 0, index);
++                newVisibleIndexes.splice(0, 0, newIndex);
++                newEngagedIndexes.splice(0, 0, newIndex);
+             }
+             else {
+-                newVisibleIndexes.push(index);
+-                newEngagedIndexes.push(index);
++                newVisibleIndexes.push(newIndex);
++                newEngagedIndexes.push(newIndex);
+             }
+             isFound = true;
+         }
+         else if (this._itemIntersectsEngagedWindow(relevantDim.start, relevantDim.end)) {
+             //TODO: This needs to be optimized
+             if (insertOnTop) {
+-                newEngagedIndexes.splice(0, 0, index);
++                newEngagedIndexes.splice(0, 0, newIndex);
+             }
+             else {
+-                newEngagedIndexes.push(index);
++                newEngagedIndexes.push(newIndex);
+             }
+             isFound = true;
+         }
+diff --git a/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.d.ts b/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.d.ts
+index cc858db..2cc8112 100644
+--- a/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.d.ts
++++ b/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.d.ts
+@@ -31,6 +31,7 @@ export default class VirtualRenderer {
+     private _renderStack;
+     private _renderStackChanged;
+     private _fetchStableId;
++    private _itemsCount;
+     private _isRecyclingEnabled;
+     private _isViewTrackerRunning;
+     private _markDirty;
+@@ -42,7 +43,7 @@ export default class VirtualRenderer {
+     private _viewabilityTracker;
+     private _dimensions;
+     private _optimizeForAnimations;
+-    constructor(renderStackChanged: (renderStack: RenderStack) => void, scrollOnNextUpdate: (point: Point) => void, fetchStableId: StableIdProvider, isRecyclingEnabled: boolean);
++    constructor(renderStackChanged: (renderStack: RenderStack) => void, scrollOnNextUpdate: (point: Point) => void, fetchStableId: StableIdProvider, isRecyclingEnabled: boolean, itemsCount: number);
+     getLayoutDimension(): Dimension;
+     setOptimizeForAnimations(shouldOptimize: boolean): void;
+     hasPendingAnimationOptimization(): boolean;
+diff --git a/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.js b/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.js
+index 116b88d..7770397 100644
+--- a/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.js
++++ b/node_modules/recyclerlistview/dist/reactnative/core/VirtualRenderer.js
+@@ -7,7 +7,7 @@ var ViewabilityTracker_1 = require("./ViewabilityTracker");
+ var ts_object_utils_1 = require("ts-object-utils");
+ var TSCast_1 = require("../utils/TSCast");
+ var VirtualRenderer = /** @class */ (function () {
+-    function VirtualRenderer(renderStackChanged, scrollOnNextUpdate, fetchStableId, isRecyclingEnabled) {
++    function VirtualRenderer(renderStackChanged, scrollOnNextUpdate, fetchStableId, isRecyclingEnabled, itemsCount) {
+         var _this = this;
+         this._layoutProvider = TSCast_1.default.cast(null); //TSI
+         this._recyclePool = TSCast_1.default.cast(null); //TSI
+@@ -45,6 +45,7 @@ var VirtualRenderer = /** @class */ (function () {
+         //Keeps track of items that need to be rendered in the next render cycle
+         this._renderStack = {};
+         this._fetchStableId = fetchStableId;
++        this._itemsCount = itemsCount;
+         //Keeps track of keys of all the currently rendered indexes, can eventually replace renderStack as well if no new use cases come up
+         this._stableIdToRenderKeyMap = {};
+         this._engagedIndexes = {};
+@@ -156,10 +157,10 @@ var VirtualRenderer = /** @class */ (function () {
+         this.getInitialOffset();
+         this._recyclePool = new RecycleItemPool_1.default();
+         if (this._params) {
+-            this._viewabilityTracker = new ViewabilityTracker_1.default(ts_object_utils_1.Default.value(this._params.renderAheadOffset, 0), ts_object_utils_1.Default.value(this._params.initialOffset, 0));
++            this._viewabilityTracker = new ViewabilityTracker_1.default(ts_object_utils_1.Default.value(this._params.renderAheadOffset, 0), ts_object_utils_1.Default.value(this._params.initialOffset, 0), this._itemsCount);
+         }
+         else {
+-            this._viewabilityTracker = new ViewabilityTracker_1.default(0, 0);
++            this._viewabilityTracker = new ViewabilityTracker_1.default(0, 0, this._itemsCount);
+         }
+         this._prepareViewabilityTracker();
+     };

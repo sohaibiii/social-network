@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Group 58</title>
+    <desc>Created with Sketch.</desc>
+    <g id="NEW" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-58">
+            <rect id="Rectangle" fill="#194D9B" x="0" y="0" width="36" height="36" rx="18"></rect>
+            <g id="Group-22" transform="translate(7.000000, 7.000000)" fill-rule="nonzero">
+                <g id="guarantee-copy" fill="#FFFFFF">
+                    <polygon id="Shape" points="21.983367 11.0040615 20.1019077 8.55321319 20.5227604 5.50821978 17.6510593 4.36944176 16.5122813 1.49774066 13.4672879 1.91859341 10.9916835 0.012378022 8.54083516 1.89383736 5.49584176 1.47298462 4.35706374 4.34468571 1.48536264 5.48346374 1.90621538 8.52845714 0 11.0040615 1.88145934 13.4549099 1.46060659 16.4999033 4.33230769 17.6386813 5.47108571 20.5103824 8.51607912 20.0895297 10.9669275 21.970989 13.4177758 20.0895297 16.4627692 20.5103824 17.6015473 17.6386813 20.4732484 16.4751473 20.0523956 13.4301538"></polygon>
+                </g>
+                <g id="checked" transform="translate(11.007923, 10.999654) rotate(-5.000000) translate(-11.007923, -10.999654) translate(5.007923, 5.999654)" fill="#194D9B">
+                    <polygon id="Path" points="-1.25276798e-13 4.97162981 4.48290178 9.16363636 11.9090722 2.12915576 10.673252 0.99167886 4.48290178 6.8726858 1.21870616 3.82614268"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

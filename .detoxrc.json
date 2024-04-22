@@ -1,0 +1,88 @@
+{
+  "testRunner": "jest",
+  "runnerConfig": "e2e/config.json",
+  "skipLegacyWorkersInjection": true,
+  "apps": {
+    "ios": {
+      "type": "ios.app",
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/SafarWay.app",
+      "build": "xcodebuild -workspace ios/SafarWay.xcworkspace -UseNewBuildSystem=NO -scheme Stage -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet"
+    },
+    "android": {
+      "type": "android.apk",
+      "binaryPath": "SPECIFY_PATH_TO_YOUR_APP_BINARY"
+    }
+  },
+  "devices": {
+    "simulator": {
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 11"
+      }
+    },
+    "emulator": {
+      "type": "android.emulator",
+      "device": {
+        "avdName": "Pixel_2_API_30"
+      }
+    }
+  },
+  "configurations": {
+    "ios.sim.release": {
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/SafarWay.app",
+      "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/SafarWay.xcworkspace -scheme Prod -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 12 Pro Max"
+      }
+    },
+    "ios.sim.stage": {
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/SafarWay.app",
+      "build": "xcodebuild -workspace ios/SafarWay.xcworkspace  -scheme Stage -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 12 Pro Max"
+      }
+    },
+    "ios.sim.stage.ci": {
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/SafarWay.app",
+      "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/SafarWay.xcworkspace -scheme Stage -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 12 Pro Max"
+      }
+    },
+    "ios.sim.dev.ci": {
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/SafarWay.app",
+      "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/SafarWay.xcworkspace -scheme Dev -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 12 Pro Max"
+      }
+    },
+    "ios.sim.prod.ci": {
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/SafarWay.app",
+      "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/SafarWay.xcworkspace -scheme Prod -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 12 Pro Max"
+      }
+    },
+    "android.emu.debug": {
+      "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "build": "cd android && ENVFILE=../.env.dev ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+      "type": "android.emulator",
+      "device": {
+        "avdName": "Pixel_2_API_30"
+      }
+    },
+    "android.emu.release": {
+      "binaryPath": "android/app/build/outputs/apk/releaseE2E/app-releaseE2E.apk",
+      "build": "cd android && ENVFILE=../.env.production ./gradlew app:assembleReleaseE2E assembleAndroidTest -DtestBuildType=release && cd ..",
+      "type": "android.emulator",
+      "device": {
+        "avdName": "Pixel_2_API_30"
+      }
+    }
+  }
+}

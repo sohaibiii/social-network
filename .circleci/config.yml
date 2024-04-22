@@ -1,0 +1,1316 @@
+version: 2.1
+jobs:
+  run_unit_tests:
+    working_directory: ~/safarway_movile_v2
+    docker:
+      - image: cimg/node:14.16.1
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Run tests with JUnit as reporter
+          command: |
+            mkdir -p test-results/jest
+            yarn test:ci
+          environment:
+            JEST_JUNIT_OUTPUT_FILE: test-results/jest/junit.xml
+
+      - persist_to_workspace:
+          root: ~/safarway_movile_v2
+          paths:
+            - node_modules
+
+      - store_test_results:
+          path: test-results/jest/
+
+      - store_artifacts:
+          path: test-results/jest/
+  build_ios_dev:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0b:0d:e9:e5:20:9c:f3:1d:47:a8:57:e0:21:7f:85:84"
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: fastlane build Development
+          command: fastlane buildDev build_number:<< pipeline.number >> --env dev
+          working_directory: ios
+
+      - store_artifacts:
+          path: output
+
+      - store_test_results:
+          path: output/scan
+
+  detox_ios_stage:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: Install applesimutils
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+
+      - run:
+          name: Install react-native and detox CLI
+          command: |
+            npm install -g react-native-cli
+            npm install -g detox-cli
+
+      - run:
+          name: Prepare detox env
+          command: |
+            detox clean-framework-cache && detox build-framework-cache
+
+      - run:
+          name: Build Detox E2E stage
+          command: |
+            yarn e2e:build:ios:stage:ci
+
+      - run:
+          name: Run Detox E2E stage
+          command: |
+            yarn e2e:test:ios:stage:ci
+
+  detox_ios_dev:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: Install applesimutils
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+
+      - run:
+          name: Install react-native and detox CLI
+          command: |
+            npm install -g react-native-cli
+            npm install -g detox-cli
+
+      - run:
+          name: Prepare detox env
+          command: |
+            detox clean-framework-cache && detox build-framework-cache
+
+      - run:
+          name: Build Detox E2E development
+          command: |
+            yarn e2e:build:ios:dev:ci
+
+      - run:
+          name: Run Detox E2E development
+          command: |
+            yarn e2e:test:ios:dev:ci
+
+  detox_ios_prod:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: Install applesimutils
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+
+      - run:
+          name: Install react-native and detox CLI
+          command: |
+            npm install -g react-native-cli
+            npm install -g detox-cli
+
+      - run:
+          name: Prepare detox env
+          command: |
+            detox clean-framework-cache && detox build-framework-cache
+
+      - run:
+          name: Build Detox E2E Prod
+          command: |
+            yarn e2e:build:ios:prod:ci
+
+      - run:
+          name: Run Detox E2E Prod
+          command: |
+            yarn e2e:test:ios:prod:ci
+
+  build_ios_stage:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0b:0d:e9:e5:20:9c:f3:1d:47:a8:57:e0:21:7f:85:84"
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+      - run:
+          name: fastlane build Stage
+          command: fastlane buildStage build_number:<< pipeline.number >> --env stage
+          working_directory: ios
+
+      - store_artifacts:
+          path: output
+
+      - store_test_results:
+          path: output/scan
+  build_ios_prod:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0b:0d:e9:e5:20:9c:f3:1d:47:a8:57:e0:21:7f:85:84"
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: fastlane build Production
+          command: fastlane buildProduction build_number:<< pipeline.number >> --env production
+          working_directory: ios
+
+      - store_artifacts:
+          path: output
+
+      - store_test_results:
+          path: output/scan
+
+  build_ios_prod_release_patch:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0b:0d:e9:e5:20:9c:f3:1d:47:a8:57:e0:21:7f:85:84"
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: fastlane build Production
+          command: fastlane buildProductionPatch --env production
+          working_directory: ios
+
+      - store_artifacts:
+          path: output
+
+      - store_test_results:
+          path: output/scan
+
+  build_ios_prod_release_minor:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0b:0d:e9:e5:20:9c:f3:1d:47:a8:57:e0:21:7f:85:84"
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: fastlane build Production
+          command: fastlane buildProductionMinor --env production
+          working_directory: ios
+
+      - store_artifacts:
+          path: output
+
+      - store_test_results:
+          path: output/scan
+
+  build_ios_prod_release_major:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0b:0d:e9:e5:20:9c:f3:1d:47:a8:57:e0:21:7f:85:84"
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: fastlane build Production
+          command: fastlane buildProductionMajor --env production
+          working_directory: ios
+
+      - store_artifacts:
+          path: output
+
+      - store_test_results:
+          path: output/scan
+
+  build_ios_bump_current_version:
+    working_directory: ~/safarway_movile_v2
+    macos:
+      xcode: 13.4.1
+    environment:
+      FL_OUTPUT_DIR: output
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0b:0d:e9:e5:20:9c:f3:1d:47:a8:57:e0:21:7f:85:84"
+      - restore_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1.3.4-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1.3.4-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+
+      #Pods directory  is ignored to match default RN setup, but can also check them into source control
+      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+      - restore_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      # https://circleci.com/docs/2.0/testing-ios/#using-custom-versions-of-cocoapods-and-other-ruby-gems
+      - run: gem install cocoapods
+
+      - run:
+          command: pod install
+          working_directory: ios
+
+      - run:
+          command: bundle install
+          working_directory: ios
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - save_cache:
+          key: pods-v1.3.4-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+          paths:
+            - ios/Pods
+
+      - run:
+          name: fastlane build bump current version
+          command: fastlane buildBumpCurrentVersion --env production
+          working_directory: ios
+
+      - store_artifacts:
+          path: output
+
+      - store_test_results:
+          path: output/scan
+
+  build_android_development:
+    working_directory: ~/safarway_movile_v2/android
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-XX:+UnlockExperimentalVMOptions -Xms1000m -Xmx1436m -XX:MaxMetaspaceSize=1436m -XX:ParallelGCThreads=1 -XX:ConcGCThreads=1 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1500m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false -DdisablePreDex'
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/safarway_movile_v2
+
+      - attach_workspace:
+          at: ~/safarway_movile_v2
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --ignore-missing
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output ~/safarway_movile_v2/android/app/src/main/assets/index.android.bundle --assets-dest ~/safarway_movile_v2/android/app/src/main/res
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output index.android.bundle --sourcemap-output index.android.bundle.packager.map
+          no_output_timeout: 15m
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/hermes-engine/linux64-bin/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          node ~/safarway_movile_v2/node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.hbc.map -o index.android.bundle.map
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/@sentry/cli/bin/sentry-cli releases \
+          files $(sentry-cli releases propose-version) \
+          upload-sourcemaps \
+          --strip-prefix ~/safarway_movile_v2 \
+          --rewrite index.android.bundle index.android.bundle.map
+      - run:
+          name: Update isCI Environment Variable at Runtime
+          command: |
+            echo 'export isCI=true' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: fastlane build Development
+          command: fastlane buildDev build_number:<< pipeline.number >> --env dev
+
+  build_android_stage:
+    working_directory: ~/safarway_movile_v2/android
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xms2048m -Xmx4096m -XX:MaxMetaspaceSize=2048m"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/safarway_movile_v2
+
+      - attach_workspace:
+          at: ~/safarway_movile_v2
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --ignore-missing
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output index.android.bundle --sourcemap-output index.android.bundle.packager.map
+          no_output_timeout: 15m
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/hermes-engine/linux64-bin/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          node ~/safarway_movile_v2/node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.hbc.map -o index.android.bundle.map
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/@sentry/cli/bin/sentry-cli releases \
+          files $(sentry-cli releases propose-version) \
+          upload-sourcemaps \
+          --strip-prefix ~/safarway_movile_v2 \
+          --rewrite index.android.bundle index.android.bundle.map
+      - run:
+          name: Update isCI Environment Variable at Runtime
+          command: |
+            echo 'export isCI=true' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: fastlane build Stage
+          command: fastlane buildStage build_number:<< pipeline.number >> --env stage
+
+  build_android_production:
+    working_directory: ~/safarway_movile_v2/android
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-XX:+UnlockExperimentalVMOptions -Xms1000m -Xmx1436m -XX:MaxMetaspaceSize=1436m -XX:ParallelGCThreads=1 -XX:ConcGCThreads=1 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1500m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false -DdisablePreDex'
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/safarway_movile_v2
+
+      - attach_workspace:
+          at: ~/safarway_movile_v2
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --ignore-missing
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output index.android.bundle --sourcemap-output index.android.bundle.packager.map
+          no_output_timeout: 15m
+      ### OS-BIN  is osx-bin, win64-bin, linux-bin, or linux64-bin depending on which operating system you are using.
+      # - run: |
+      #     node_modules/hermes-engine/{OS-BIN}/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/hermes-engine/linux64-bin/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          node ~/safarway_movile_v2/node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.hbc.map -o index.android.bundle.map
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/@sentry/cli/bin/sentry-cli releases \
+          files $(sentry-cli releases propose-version) \
+          upload-sourcemaps \
+          --strip-prefix ~/safarway_movile_v2 \
+          --rewrite index.android.bundle index.android.bundle.map
+      - run:
+          name: Update isCI Environment Variable at Runtime
+          command: |
+            echo 'export isCI=true' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: fastlane build Release
+          command: fastlane buildRelease build_number:<< pipeline.number >> --env production
+
+  build_android_prod_release_patch:
+    working_directory: ~/safarway_movile_v2/android
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xms2048m -Xmx4096m -XX:MaxMetaspaceSize=2048m"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/safarway_movile_v2
+
+      - attach_workspace:
+          at: ~/safarway_movile_v2
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --ignore-missing
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output index.android.bundle --sourcemap-output index.android.bundle.packager.map
+          no_output_timeout: 15m
+      ### OS-BIN  is osx-bin, win64-bin, linux-bin, or linux64-bin depending on which operating system you are using.
+      # - run: |
+      #     node_modules/hermes-engine/{OS-BIN}/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/hermes-engine/linux64-bin/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          node ~/safarway_movile_v2/node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.hbc.map -o index.android.bundle.map
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/@sentry/cli/bin/sentry-cli releases \
+          files $(sentry-cli releases propose-version) \
+          upload-sourcemaps \
+          --strip-prefix ~/safarway_movile_v2 \
+          --rewrite index.android.bundle index.android.bundle.map
+      - run:
+          name: Update isCI Environment Variable at Runtime
+          command: |
+            echo 'export isCI=true' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: fastlane build Release
+          command: fastlane buildReleasePatch --env production
+
+  build_android_prod_release_minor:
+    working_directory: ~/safarway_movile_v2/android
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xms2048m -Xmx4096m -XX:MaxMetaspaceSize=2048m"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/safarway_movile_v2
+
+      - attach_workspace:
+          at: ~/safarway_movile_v2
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --ignore-missing
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output index.android.bundle --sourcemap-output index.android.bundle.packager.map
+          no_output_timeout: 15m
+      ### OS-BIN  is osx-bin, win64-bin, linux-bin, or linux64-bin depending on which operating system you are using.
+      # - run: |
+      #     node_modules/hermes-engine/{OS-BIN}/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/hermes-engine/linux64-bin/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          node ~/safarway_movile_v2/node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.hbc.map -o index.android.bundle.map
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/@sentry/cli/bin/sentry-cli releases \
+          files $(sentry-cli releases propose-version) \
+          upload-sourcemaps \
+          --strip-prefix ~/safarway_movile_v2 \
+          --rewrite index.android.bundle index.android.bundle.map
+      - run:
+          name: Update isCI Environment Variable at Runtime
+          command: |
+            echo 'export isCI=true' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: fastlane build Release
+          command: fastlane buildReleaseMinor --env production
+
+  build_android_prod_release_major:
+    working_directory: ~/safarway_movile_v2/android
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xms2048m -Xmx4096m -XX:MaxMetaspaceSize=2048m"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/safarway_movile_v2
+
+      - attach_workspace:
+          at: ~/safarway_movile_v2
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --ignore-missing
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output index.android.bundle --sourcemap-output index.android.bundle.packager.map
+          no_output_timeout: 15m
+      ### OS-BIN  is osx-bin, win64-bin, linux-bin, or linux64-bin depending on which operating system you are using.
+      # - run: |
+      #     node_modules/hermes-engine/{OS-BIN}/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/hermes-engine/linux64-bin/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          node ~/safarway_movile_v2/node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.hbc.map -o index.android.bundle.map
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/@sentry/cli/bin/sentry-cli releases \
+          files $(sentry-cli releases propose-version) \
+          upload-sourcemaps \
+          --strip-prefix ~/safarway_movile_v2 \
+          --rewrite index.android.bundle index.android.bundle.map
+      - run:
+          name: Update isCI Environment Variable at Runtime
+          command: |
+            echo 'export isCI=true' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: fastlane build Release
+          command: fastlane buildReleaseMajor --env production
+
+  build_android_bump_current_version:
+    working_directory: ~/safarway_movile_v2/android
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xms2048m -Xmx4096m -XX:MaxMetaspaceSize=2048m"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - checkout:
+          path: ~/safarway_movile_v2
+
+      - attach_workspace:
+          at: ~/safarway_movile_v2
+
+      - restore_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1.3.4-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --ignore-missing
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - run:
+          command: npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output index.android.bundle --sourcemap-output index.android.bundle.packager.map
+          no_output_timeout: 15m
+      ### OS-BIN  is osx-bin, win64-bin, linux-bin, or linux64-bin depending on which operating system you are using.
+      # - run: |
+      #     node_modules/hermes-engine/{OS-BIN}/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/hermes-engine/linux64-bin/hermesc -O -emit-binary -output-source-map -out=index.android.bundle.hbc index.android.bundle
+
+      - run: |
+          node ~/safarway_movile_v2/node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.hbc.map -o index.android.bundle.map
+
+      - run: |
+          ~/safarway_movile_v2/node_modules/@sentry/cli/bin/sentry-cli releases \
+          files $(sentry-cli releases propose-version) \
+          upload-sourcemaps \
+          --strip-prefix ~/safarway_movile_v2 \
+          --rewrite index.android.bundle index.android.bundle.map
+      - run:
+          name: Update isCI Environment Variable at Runtime
+          command: |
+            echo 'export isCI=true' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: fastlane build bump current version
+          command: fastlane buildBumpCurrentVersion --env production
+
+workflows:
+  build-safarway-v2:
+    jobs:
+      - run_unit_tests:
+        filters:
+          branches:
+            only:
+              - development
+              - stage
+              # - master
+              - "@master/release-patch-version"
+              - "@master/release-minor-version"
+              - "@master/release-major-version"
+              - "@master/bump-version-code-build-number"
+      # - detox_ios_stage:
+      #     requires:
+      #       - run_unit_tests
+      #     filters:
+      #       branches:
+      #         only:
+      #           - stage
+      # - detox_ios_dev:
+      #     requires:
+      #       - run_unit_tests
+      #     filters:
+      #       branches:
+      #         only:
+      #           - development
+      # - detox_ios_prod:
+      #     requires:
+      #       - run_unit_tests
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      - build_android_development:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only: development
+      - build_android_stage:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - stage
+      # - build_android_production:
+      #     requires:
+      #       - run_unit_tests
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      - build_ios_dev:
+          requires:
+            - run_unit_tests
+            #- detox_ios_dev
+          filters:
+            branches:
+              only: development
+      - build_ios_stage:
+          requires:
+            - run_unit_tests
+            # - detox_ios_stage
+          filters:
+            branches:
+              only:
+                - stage
+      # - build_ios_prod:
+      #     requires:
+      #       - run_unit_tests
+      #       # - detox_ios_prod
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      - build_android_prod_release_patch:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/release-patch-version"
+      - build_ios_prod_release_patch:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/release-patch-version"
+      - build_android_prod_release_minor:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/release-minor-version"
+      - build_ios_prod_release_minor:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/release-minor-version"
+      - build_android_prod_release_major:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/release-major-version"
+      - build_ios_prod_release_major:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/release-major-version"
+
+      - build_android_bump_current_version:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/bump-version-code-build-number"
+      - build_ios_bump_current_version:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only:
+                - "@master/bump-version-code-build-number"

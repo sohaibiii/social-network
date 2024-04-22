@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="104px" height="104px" viewBox="0 0 104 104" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <g id="ProfileFollows" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(2.000000, 2.000000)">
+            <circle id="Oval" stroke-opacity="0.8" stroke="#FFFFFF" stroke-width="2" fill="#FFFFFF" cx="50" cy="50"
+                    r="51"></circle>
+            <g id="user-(1)" fill="currentColor" fill-rule="nonzero">
+                <path d="M50,0 C22.4304687,0 0,22.4304687 0,50 C0,77.5695312 22.4304687,100 50,100 C77.5695312,100 100,77.5695312 100,50 C100,22.4304687 77.5695312,0 50,0 Z M50,14.5833984 C63.2099609,14.5833984 73.9583984,25.3316406 73.9583984,38.5417969 C73.9583984,51.7519531 63.2099609,62.5 50,62.5 C36.7900391,62.5 26.0416016,51.7517578 26.0416016,38.5416016 C26.0416016,25.3314453 36.7900391,14.5833984 50,14.5833984 Z M50,91.6666016 C36.3853516,91.6666016 24.3125,85.0738281 16.7044922,74.9449219 C25.0396484,70.934375 36.9429687,66.6666016 50,66.6666016 C63.0580078,66.6666016 74.9623047,70.9349609 83.2957031,74.9445312 C75.6876953,85.0736328 63.6148438,91.6666016 50,91.6666016 Z"
+                      id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

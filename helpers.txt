@@ -1,0 +1,17 @@
+iOS
+select Product > Scheme > Edit Scheme... menu on the top of the screen. xcode edit scheme
+select Run menu on the left of Edit scheme... dialog and click Arguments tab on right side. edit scheme arguments
+click + button in Arguments Passed On Launch session on Arguments tab and insert below code(include - )
+
+-FIRDebugEnabled
+-FIRDebugDisabled
+
+
+Android 
+
+is more simple than iOS. execute Android Emulator or Device and execute below code.
+
+adb shell setprop debug.firebase.analytics.app <package_name>
+if you want to stop DebugView of Firebase Analytics, execute below code.
+
+adb shell setprop debug.firebase.analytics.app .none.

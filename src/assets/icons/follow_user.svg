@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>icons2/16/follow_grey</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icons2/16/follow_grey" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(1.000000, 2.000000)" stroke="currentColor">
+            <path d="M4.57142857,-1.0658141e-14 C2.88670476,-1.0658141e-14 1.52380952,1.36411429 1.52380952,3.04761905 C1.52380952,4.73112381 2.88670476,6.0952381 4.57142857,6.0952381 C6.25615238,6.0952381 7.61904762,4.73112381 7.61904762,3.04761905 C7.61904762,1.36411429 6.25615238,-1.0658141e-14 4.57142857,-1.0658141e-14 Z"
+                  id="Shape" fill-rule="nonzero"/>
+            <path d="M4.57142857,7.61904762 C1.71428571,7.61904762 -1.77635684e-15,9.14285714 -1.77635684e-15,10.6666667 C-1.77635684e-15,11.4285714 1.71428571,12.1904762 4.57142857,12.1904762 C7.25180952,12.1904762 9.14285714,11.4285714 9.14285714,10.6666667 C9.14285714,9.14285714 7.34933333,7.61904762 4.57142857,7.61904762 Z"
+                  id="Shape" fill-rule="nonzero"/>
+            <path d="M10.9542131,3.04761905 L10.9542131,8.95604516" id="Path-3" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M10.9542131,3.04761905 L10.9542131,8.95604516" id="Path-3-Copy" stroke-linecap="round"
+                  stroke-linejoin="round"
+                  transform="translate(10.954213, 6.001832) rotate(-270.000000) translate(-10.954213, -6.001832) "/>
+        </g>
+    </g>
+</svg>

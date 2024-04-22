@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <svg xmlns="http://www.w3.org/2000/svg" viewBox="75.124 6.632 340.206 486.008" width="340.206" height="486.008">
+    <rect x="135.694" y="45.689" width="216.615" height="266.998" style="stroke: rgb(255, 255, 255); fill: rgb(255, 255, 255);"></rect>
+    <path fill="#5ec3ed" d="M 245.227 6.632 C 151.429 6.632 75.124 82.935 75.124 176.735 C 75.124 304.312 245.227 492.64 245.227 492.64 C 245.227 492.64 415.33 304.312 415.33 176.735 C 415.33 82.935 339.027 6.632 245.227 6.632 M 245.227 55.233 C 282.65 55.224 306.05 95.728 287.345 128.141 C 278.665 143.184 262.62 152.454 245.252 152.459 C 207.83 152.468 184.43 111.964 203.134 79.549 C 211.814 64.508 227.859 55.238 245.227 55.233 M 245.227 298.237 C 204.646 298.237 168.924 277.582 148.026 245.991 C 148.026 213.914 212.908 196.176 245.227 196.176 C 277.546 196.176 342.43 213.914 342.43 245.991 C 320.889 278.659 284.357 298.293 245.227 298.237 Z" style=""></path>
+    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="matrix(11.065052, 0, 0, 11.065052, 158.936249, 136.379105)" style="">
+        <g stroke-width="2">
+            <path stroke-dasharray="16" stroke-dashoffset="16" d="M12 3H19V11"></path>
+            <path stroke-dasharray="44" stroke-dashoffset="44" d="M19 17V21H5V3H12"></path>
+            <path stroke-dasharray="10" stroke-dashoffset="10" d="M21 14H12.5"></path>
+            <path stroke-dasharray="6" stroke-dashoffset="6" d="M12 14L15 17M12 14L15 11"></path>
+        </g>
+        <path stroke-dasharray="12" stroke-dashoffset="12" d="M14.5 3.5V6.5H9.5V3.5"></path>
+    </g>
+</svg>

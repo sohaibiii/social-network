@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>456084041901-31lc384mvvksf7grg2m31ada79ipcpsg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.456084041901-31lc384mvvksf7grg2m31ada79ipcpsg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>456084041901-ii7cu470148i7j9r0evm70785po531m7.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD8JYG2GZdvfWH2M8ZmiwAAnHZu55PxWG8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>456084041901</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.safarway.app</string>
+	<key>PROJECT_ID</key>
+	<string>safarway-64231</string>
+	<key>STORAGE_BUCKET</key>
+	<string>safarway-64231.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:456084041901:ios:f2b295b1c67bebedb35624</string>
+	<key>DATABASE_URL</key>
+	<string>https://safarway-64231.firebaseio.com</string>
+</dict>
+</plist>

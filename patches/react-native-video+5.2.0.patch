@@ -1,0 +1,172 @@
+diff --git a/node_modules/react-native-video/Video.js b/node_modules/react-native-video/Video.js
+index b492d48..465c4bf 100644
+--- a/node_modules/react-native-video/Video.js
++++ b/node_modules/react-native-video/Video.js
+@@ -75,6 +75,10 @@ export default class Video extends Component {
+     this.setNativeProps({ fullscreen: false });
+   };
+ 
++  destroyVideoPlayerComponent = () => {
++    this.setNativeProps({ destroyVideoComponent: true });
++  };
++
+   save = async (options?) => {
+     return await NativeModules.VideoManager.save(options, findNodeHandle(this._root));
+   }
+diff --git a/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/ReactVideoView.java b/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/ReactVideoView.java
+index f3f5fe7..c369fb5 100644
+--- a/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/ReactVideoView.java
++++ b/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/ReactVideoView.java
+@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
+ import android.annotation.TargetApi;
+ import android.app.Activity;
+ import android.content.res.AssetFileDescriptor;
++import android.content.res.Configuration;
+ import android.graphics.Matrix;
+ import android.media.MediaPlayer;
+ import android.media.TimedMetaData;
+@@ -176,12 +177,23 @@ public class ReactVideoView extends ScalableVideoView implements
+     public boolean onTouchEvent(MotionEvent event) {
+         if (mUseNativeControls) {
+             initializeMediaControllerIfNeeded();
+-            mediaController.show();
++            if(mediaController.isShowing()){
++                mediaController.hide();
++            } else {
++                mediaController.show();
++            }
+         }
+ 
+         return super.onTouchEvent(event);
+     }
+ 
++    @Override
++    public void onConfigurationChanged(Configuration newConfig) {
++        super.onConfigurationChanged(newConfig);
++        initializeMediaControllerIfNeeded();
++        mediaController.hide();
++    }
++
+     @Override
+     @SuppressLint("DrawAllocation")
+     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+diff --git a/node_modules/react-native-video/ios/Video/RCTVideo.m b/node_modules/react-native-video/ios/Video/RCTVideo.m
+index a757c08..3b10cf8 100644
+--- a/node_modules/react-native-video/ios/Video/RCTVideo.m
++++ b/node_modules/react-native-video/ios/Video/RCTVideo.m
+@@ -84,11 +84,13 @@ @implementation RCTVideo
+   NSString *_filterName;
+   BOOL _filterEnabled;
+   UIViewController * _presentingViewController;
++  BOOL _initialLoad;
+ #if __has_include(<react-native-video/RCTVideoCache.h>)
+   RCTVideoCache * _videoCache;
+ #endif
+ #if TARGET_OS_IOS
+   void (^__strong _Nonnull _restoreUserInterfaceForPIPStopCompletionHandler)(BOOL);
++  void (^__strong _Nonnull _destroyVideoComponent)(BOOL);
+   AVPictureInPictureController *_pipController;
+ #endif
+ }
+@@ -120,8 +122,10 @@ - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
+     _pictureInPicture = false;
+     _ignoreSilentSwitch = @"inherit"; // inherit, ignore, obey
+     _mixWithOthers = @"inherit"; // inherit, mix, duck
++    _initialLoad = true;
+ #if TARGET_OS_IOS
+     _restoreUserInterfaceForPIPStopCompletionHandler = NULL;
++    _destroyVideoComponent = NULL;
+ #endif
+ #if __has_include(<react-native-video/RCTVideoCache.h>)
+     _videoCache = [RCTVideoCache sharedInstance];
+@@ -159,6 +163,7 @@ - (RCTVideoPlayerViewController*)createPlayerViewController:(AVPlayer*)player
+   
+   viewController.view.frame = self.bounds;
+   viewController.player = player;
++  _initialLoad = false;
+   return viewController;
+ }
+ 
+@@ -747,12 +752,19 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
+         CGRect newRect = [change[NSKeyValueChangeNewKey] CGRectValue];
+ 
+         if (!CGRectEqualToRect(oldRect, newRect)) {
+-          if (CGRectEqualToRect(newRect, [UIScreen mainScreen].bounds)) {
++          if (CGRectEqualToRect(newRect, [UIScreen mainScreen].bounds) && !_initialLoad) {
+             NSLog(@"in fullscreen");
+-
++            if(self.onVideoFullscreenPlayerWillPresent) {
++                self.onVideoFullscreenPlayerWillPresent(@{@"target": self.reactTag});
++            }
+             [self.reactViewController.view setFrame:[UIScreen mainScreen].bounds];
+             [self.reactViewController.view setNeedsLayout];
+-          } else NSLog(@"not fullscreen");
++          } else {
++            NSLog(@"not fullscreen");
++            if(self.onVideoFullscreenPlayerWillDismiss) {
++            self.onVideoFullscreenPlayerWillDismiss(@{@"target": self.reactTag});
++            }
++          }
+         }
+ 
+         return;
+@@ -906,6 +918,33 @@ - (void)setRestoreUserInterfaceForPIPStopCompletionHandler:(BOOL)restore
+   }
+ }
+ 
++- (void)setDestroyVideoComponent:(BOOL)restore
++{
++   [_player pause];
++   [_player setRate:0.0];
++   [[NSNotificationCenter defaultCenter] removeObserver:self];
++   [self removePlayerLayer];
++   [self removePlayerItemObservers];
++   [_playerLayer setPlayer:nil];
++   [_playerViewController.view removeFromSuperview];
++   [_playerViewController setPlayer:nil];
++   [_player removeTimeObserver:_timeObserver];
++   if (_playbackRateObserverRegistered) {
++       [_player removeObserver:self forKeyPath:playbackRate context:nil];
++       _playbackRateObserverRegistered = NO;
++   }
++   if (self->_isExternalPlaybackActiveObserverRegistered) {
++       [self->_player removeObserver:self forKeyPath:externalPlaybackActive context:nil];
++       self->_isExternalPlaybackActiveObserverRegistered = NO;
++   }
++   _playerViewController = nil;
++   _timeObserver = nil;
++  if (_destroyVideoComponent != NULL) {
++    _destroyVideoComponent(restore);
++    _destroyVideoComponent = NULL;
++  }
++}
++
+ - (void)setupPipController {
+   if (!_pipController && _playerLayer && [AVPictureInPictureController isPictureInPictureSupported]) {
+     // Create new controller passing reference to the AVPlayerLayer
+@@ -1518,7 +1557,12 @@ - (void)videoPlayerViewControllerDidDismiss:(AVPlayerViewController *)playerView
+     _playerViewController = nil;
+     [self applyModifiers];
+     if(self.onVideoFullscreenPlayerDidDismiss) {
+-      self.onVideoFullscreenPlayerDidDismiss(@{@"target": self.reactTag});
++        self.onVideoFullscreenPlayerDidDismiss(@{@"target": self.reactTag});
++    }
++  }
++  else if (!_fullscreenPlayerPresented){
++    if(self.onVideoFullscreenPlayerDidDismiss) {
++          self.onVideoFullscreenPlayerDidDismiss(@{@"target": self.reactTag});
+     }
+   }
+ }
+diff --git a/node_modules/react-native-video/ios/Video/RCTVideoManager.m b/node_modules/react-native-video/ios/Video/RCTVideoManager.m
+index 000a9e8..4c2dab4 100644
+--- a/node_modules/react-native-video/ios/Video/RCTVideoManager.m
++++ b/node_modules/react-native-video/ios/Video/RCTVideoManager.m
+@@ -49,6 +49,7 @@ - (dispatch_queue_t)methodQueue
+ RCT_EXPORT_VIEW_PROPERTY(filterEnabled, BOOL);
+ RCT_EXPORT_VIEW_PROPERTY(progressUpdateInterval, float);
+ RCT_EXPORT_VIEW_PROPERTY(restoreUserInterfaceForPIPStopCompletionHandler, BOOL);
++RCT_EXPORT_VIEW_PROPERTY(destroyVideoComponent, BOOL);
+ /* Should support: onLoadStart, onLoad, and onError to stay consistent with Image */
+ RCT_EXPORT_VIEW_PROPERTY(onVideoLoadStart, RCTDirectEventBlock);
+ RCT_EXPORT_VIEW_PROPERTY(onVideoLoad, RCTDirectEventBlock);

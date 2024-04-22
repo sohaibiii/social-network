@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Group 59</title>
+    <desc>Created with Sketch.</desc>
+    <g id="NEW" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-59">
+            <rect id="Rectangle" fill="#194D9B" x="0" y="0" width="36" height="36" rx="18"></rect>
+            <g id="invite" transform="translate(6.300000, 8.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                <circle id="Oval" cx="12.5" cy="4.5" r="4.5"></circle>
+                <path d="M14.75,10.5 L10.25,10.5 C7.35187576,10.5033065 5.00330648,12.8518758 5,15.75 L5,17.25 C5,17.6642136 5.33578644,18 5.75,18 L19.25,18 C19.6642136,18 20,17.6642136 20,17.25 L20,15.75 C19.9966935,12.8518758 17.6481242,10.5033065 14.75,10.5 Z" id="Path"></path>
+                <path d="M3.5,5 C3.01675084,5 2.625,5.39175084 2.625,5.875 L2.625,7.625 L0.875,7.625 C0.391750844,7.625 0,8.01675084 0,8.5 C0,8.98324916 0.391750844,9.375 0.875,9.375 L2.625,9.375 L2.625,11.125 C2.625,11.6082492 3.01675084,12 3.5,12 C3.98324916,12 4.375,11.6082492 4.375,11.125 L4.375,9.375 L6.125,9.375 C6.60824916,9.375 7,8.98324916 7,8.5 C7,8.01675084 6.60824916,7.625 6.125,7.625 L4.375,7.625 L4.375,5.875 C4.375,5.39175084 3.98324916,5 3.5,5 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

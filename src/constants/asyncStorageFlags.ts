@@ -1,0 +1,10 @@
+export const THEME_MODE_FLAG = "safarway_theme_mode";
+export const LANGUAGE_FLAG = "safarway_language";
+export const APP_RESTART_COUNTER = "safarway_restart_counter";
+export const IS_CHANGING_LANGUAGE = "safarway_is_changing_language";
+export const JWT_TOKEN_FLAG = "safarway_jwt_token";
+export const REFRESH_TOKEN_FLAG = "safarway_refresg_token";
+export const PUSH_NOTIFICATION_TOKEN = "safarway_push_notification_token";
+export const APP_INTRO_FLAG = "safarway_app_intro_flag";
+export const USER_REFERRAL = "safarway_user_referral";
+export const HOTEL_AFFILIATE_FLAG = "safarway_hotel_affiliate";

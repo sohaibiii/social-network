@@ -1,0 +1,109 @@
+{
+  "project_info": {
+    "project_number": "456084041901",
+    "firebase_url": "https://safarway-64231.firebaseio.com",
+    "project_id": "safarway-64231",
+    "storage_bucket": "safarway-64231.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456084041901:android:6b9c5f548dd8d130b35624",
+        "android_client_info": {
+          "package_name": "com.safarway.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456084041901-ii7cu470148i7j9r0evm70785po531m7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.safarway.app",
+            "certificate_hash": "3a3a17e1a7c51ab23590a3627401f2b405214ad5"
+          }
+        },
+        {
+          "client_id": "456084041901-k22fqiohp564vg4k75recbvtdh6j5tqt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.safarway.app",
+            "certificate_hash": "dbfda8555a566283bffd85863d0c1afe4ba3e532"
+          }
+        },
+        {
+          "client_id": "456084041901-llsna29i7pbjvubts4obtebd5l1g23ep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.safarway.app",
+            "certificate_hash": "0482813a6ca29602264ca4739abbeb650870bfa9"
+          }
+        },
+        {
+          "client_id": "456084041901-uds62d0bg4dnmkmlj1noudddq0ji1jvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa0_27LcJRcorcz7MucV6OIHpgWOtR51o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456084041901-uds62d0bg4dnmkmlj1noudddq0ji1jvn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "456084041901-31lc384mvvksf7grg2m31ada79ipcpsg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.safarway.app",
+                "app_store_id": "1497520175"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456084041901:android:34338b047238aa6fb35624",
+        "android_client_info": {
+          "package_name": "com.safarway.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456084041901-uds62d0bg4dnmkmlj1noudddq0ji1jvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa0_27LcJRcorcz7MucV6OIHpgWOtR51o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456084041901-uds62d0bg4dnmkmlj1noudddq0ji1jvn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "456084041901-31lc384mvvksf7grg2m31ada79ipcpsg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.safarway.app",
+                "app_store_id": "1497520175"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

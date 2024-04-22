@@ -1,0 +1,686 @@
+diff --git a/node_modules/react-native-background-upload/android/build.gradle b/node_modules/react-native-background-upload/android/build.gradle
+index fa6963f..f61aa3d 100755
+--- a/node_modules/react-native-background-upload/android/build.gradle
++++ b/node_modules/react-native-background-upload/android/build.gradle
+@@ -1,6 +1,6 @@
+ buildscript {
+     ext {
+-        kotlinVersion = '1.6.0'
++        kotlinVersion = '1.8.0'
+         buildToolsVersion = '29.0.2'
+         compileSdkVersion = 29
+         targetSdkVersion = 29
+@@ -20,7 +20,7 @@ buildscript {
+ 
+ apply plugin: 'com.android.library'
+ apply plugin: 'kotlin-android'
+-apply plugin: 'kotlin-android-extensions'
++apply plugin: 'kotlin-parcelize'
+ 
+ def DEFAULT_COMPILE_SDK_VERSION = 28
+ def DEFAULT_BUILD_TOOLS_VERSION = "28.0.3"
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/06e40d33dd910bdebeeac563848fae6f/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/06e40d33dd910bdebeeac563848fae6f/results.bin
+new file mode 100644
+index 0000000..e3f0ff0
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/06e40d33dd910bdebeeac563848fae6f/results.bin
+@@ -0,0 +1 @@
++i/classes_global-synthetics
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/329b6383012c1acad44a5fde1644a343/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/329b6383012c1acad44a5fde1644a343/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/329b6383012c1acad44a5fde1644a343/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/329b6383012c1acad44a5fde1644a343/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-background-upload/android/build/.transforms/329b6383012c1acad44a5fde1644a343/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..992a246
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/.transforms/329b6383012c1acad44a5fde1644a343/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/4ff7ab173202d0b06e91994e423290e2/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/4ff7ab173202d0b06e91994e423290e2/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/4ff7ab173202d0b06e91994e423290e2/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/4ff7ab173202d0b06e91994e423290e2/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-background-upload/android/build/.transforms/4ff7ab173202d0b06e91994e423290e2/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..13cbc4a
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/.transforms/4ff7ab173202d0b06e91994e423290e2/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/5280170ac43747b4fe7a78536c897597/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/5280170ac43747b4fe7a78536c897597/results.bin
+new file mode 100644
+index 0000000..61a58fa
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/5280170ac43747b4fe7a78536c897597/results.bin
+@@ -0,0 +1 @@
++i/classes_dex
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/693f523a05e957425f9dd974f7bc1754/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/693f523a05e957425f9dd974f7bc1754/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/693f523a05e957425f9dd974f7bc1754/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/693f523a05e957425f9dd974f7bc1754/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-background-upload/android/build/.transforms/693f523a05e957425f9dd974f7bc1754/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..992a246
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/.transforms/693f523a05e957425f9dd974f7bc1754/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/9b79dfcaec4bc34059fe3ce95bd446cb/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/9b79dfcaec4bc34059fe3ce95bd446cb/results.bin
+new file mode 100644
+index 0000000..e3f0ff0
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/9b79dfcaec4bc34059fe3ce95bd446cb/results.bin
+@@ -0,0 +1 @@
++i/classes_global-synthetics
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/9c6657c367cf02bd84becc7437b6b5ed/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/9c6657c367cf02bd84becc7437b6b5ed/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/9c6657c367cf02bd84becc7437b6b5ed/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/9c6657c367cf02bd84becc7437b6b5ed/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-background-upload/android/build/.transforms/9c6657c367cf02bd84becc7437b6b5ed/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..13cbc4a
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/.transforms/9c6657c367cf02bd84becc7437b6b5ed/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/b669a78a727587026f996ef2bc0f47f3/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/b669a78a727587026f996ef2bc0f47f3/results.bin
+new file mode 100644
+index 0000000..e3f0ff0
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/b669a78a727587026f996ef2bc0f47f3/results.bin
+@@ -0,0 +1 @@
++i/classes_global-synthetics
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/b6d6be10254333235b7b6e67de6f3eff/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/b6d6be10254333235b7b6e67de6f3eff/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/b6d6be10254333235b7b6e67de6f3eff/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/b6d6be10254333235b7b6e67de6f3eff/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-background-upload/android/build/.transforms/b6d6be10254333235b7b6e67de6f3eff/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..992a246
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/.transforms/b6d6be10254333235b7b6e67de6f3eff/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/bfd6c50890836ab9762a1cca7e28ee4f/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/bfd6c50890836ab9762a1cca7e28ee4f/results.bin
+new file mode 100644
+index 0000000..e3f0ff0
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/bfd6c50890836ab9762a1cca7e28ee4f/results.bin
+@@ -0,0 +1 @@
++i/classes_global-synthetics
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/d27ae0c73458918fa23ab8e2501531ea/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/d27ae0c73458918fa23ab8e2501531ea/results.bin
+new file mode 100644
+index 0000000..61a58fa
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/d27ae0c73458918fa23ab8e2501531ea/results.bin
+@@ -0,0 +1 @@
++i/classes_dex
+diff --git a/node_modules/react-native-background-upload/android/build/.transforms/f2bd551a030225235d6814a340e9935f/results.bin b/node_modules/react-native-background-upload/android/build/.transforms/f2bd551a030225235d6814a340e9935f/results.bin
+new file mode 100644
+index 0000000..e3f0ff0
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/.transforms/f2bd551a030225235d6814a340e9935f/results.bin
+@@ -0,0 +1 @@
++i/classes_global-synthetics
+diff --git a/node_modules/react-native-background-upload/android/build/generated/source/buildConfig/debug/com/vydia/RNUploader/BuildConfig.java b/node_modules/react-native-background-upload/android/build/generated/source/buildConfig/debug/com/vydia/RNUploader/BuildConfig.java
+new file mode 100644
+index 0000000..c3fab9b
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/generated/source/buildConfig/debug/com/vydia/RNUploader/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package com.vydia.RNUploader;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "com.vydia.RNUploader";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/react-native-background-upload/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..abd5072
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.vydia.RNUploader" >
++
++    <uses-sdk android:minSdkVersion="21" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json b/node_modules/react-native-background-upload/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+new file mode 100644
+index 0000000..eae5175
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "com.vydia.RNUploader",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/aar_metadata/debug/aar-metadata.properties b/node_modules/react-native-background-upload/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+new file mode 100644
+index 0000000..776557e
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+@@ -0,0 +1,5 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json b/node_modules/react-native-background-upload/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/react-native-background-upload/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
+new file mode 100644
+index 0000000..51acffe
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/react-native-background-upload/android/build/intermediates/compile_r_class_jar/debug/R.jar
+new file mode 100644
+index 0000000..5785a12
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/react-native-background-upload/android/build/intermediates/compile_symbol_list/debug/R.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-background-upload/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..79356a6
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Tue Feb 20 14:14:10 PKT 2024
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/react-native-background-upload/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..53a51ba
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/react-native-background-upload/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..7997cda
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/debug/shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/react-native-background-upload/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+new file mode 100644
+index 0000000..c97532c
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/build/intermediates/shader_assets/debug/out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/javac/debug/classes/com/vydia/RNUploader/BuildConfig.class b/node_modules/react-native-background-upload/android/build/intermediates/javac/debug/classes/com/vydia/RNUploader/BuildConfig.class
+new file mode 100644
+index 0000000..cd529e1
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/intermediates/javac/debug/classes/com/vydia/RNUploader/BuildConfig.class differ
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/javac/debug/classes/com/vydia/RNUploader/UploaderReactPackage.class b/node_modules/react-native-background-upload/android/build/intermediates/javac/debug/classes/com/vydia/RNUploader/UploaderReactPackage.class
+new file mode 100644
+index 0000000..421d91c
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/intermediates/javac/debug/classes/com/vydia/RNUploader/UploaderReactPackage.class differ
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/local_only_symbol_list/debug/R-def.txt b/node_modules/react-native-background-upload/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+new file mode 100644
+index 0000000..78ac5b8
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+@@ -0,0 +1,2 @@
++R_DEF: Internal format may change without notice
++local
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/react-native-background-upload/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..55595ca
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="com.vydia.RNUploader" >
++4
++5    <uses-sdk android:minSdkVersion="21" />
++6
++7</manifest>
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/react-native-background-upload/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+new file mode 100644
+index 0000000..abd5072
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.vydia.RNUploader" >
++
++    <uses-sdk android:minSdkVersion="21" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/navigation_json/debug/navigation.json b/node_modules/react-native-background-upload/android/build/intermediates/navigation_json/debug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/navigation_json/debug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/react-native-background-upload/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
+new file mode 100644
+index 0000000..d17d410
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/react-native-background-upload/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/react-native-background-upload/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+new file mode 100644
+index 0000000..1683e97
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+@@ -0,0 +1 @@
++com.vydia.RNUploader
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab
+new file mode 100644
+index 0000000..8f209e2
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream
+new file mode 100644
+index 0000000..4be4c88
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len
+new file mode 100644
+index 0000000..919a0ce
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at
+new file mode 100644
+index 0000000..65e3c7a
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i
+new file mode 100644
+index 0000000..9c0fbf5
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab
+new file mode 100644
+index 0000000..90c6356
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream
+new file mode 100644
+index 0000000..fb1f4c6
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len
+new file mode 100644
+index 0000000..98b33a3
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at
+new file mode 100644
+index 0000000..8f28327
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i
+new file mode 100644
+index 0000000..06ac60d
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab
+new file mode 100644
+index 0000000..4c2e5d5
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..fb1f4c6
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..98b33a3
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..d3e5c3b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i
+new file mode 100644
+index 0000000..06ac60d
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab
+new file mode 100644
+index 0000000..6d6fcbc
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..818a69a
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..0e8b35d
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len
+new file mode 100644
+index 0000000..ec8f944
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..67ecd64
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i
+new file mode 100644
+index 0000000..cdf924e
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab
+new file mode 100644
+index 0000000..a08fe22
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream
+new file mode 100644
+index 0000000..3a80e1d
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len
+new file mode 100644
+index 0000000..fa606b6
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len
+new file mode 100644
+index 0000000..ec8f944
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at
+new file mode 100644
+index 0000000..34c70cf
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i
+new file mode 100644
+index 0000000..605d423
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab
+new file mode 100644
+index 0000000..fbe9cbb
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream
+new file mode 100644
+index 0000000..627bda4
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len
+new file mode 100644
+index 0000000..919a0ce
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at
+new file mode 100644
+index 0000000..789053a
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i
+new file mode 100644
+index 0000000..4b91d4c
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab
+new file mode 100644
+index 0000000..dd1f631
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream
+new file mode 100644
+index 0000000..6ee346e
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len
+new file mode 100644
+index 0000000..8bccc6c
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at
+new file mode 100644
+index 0000000..39c0f40
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i
+new file mode 100644
+index 0000000..0b8e2fa
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab
+new file mode 100644
+index 0000000..208db4f
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream
+new file mode 100644
+index 0000000..3ac737b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len
+new file mode 100644
+index 0000000..2a17e6e
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at
+new file mode 100644
+index 0000000..0f26a7a
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i
+new file mode 100644
+index 0000000..79944ea
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+new file mode 100644
+index 0000000..26d3b09
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+@@ -0,0 +1,2 @@
++4
++0
+\ No newline at end of file
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab
+new file mode 100644
+index 0000000..97f0b5e
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream
+new file mode 100644
+index 0000000..627bda4
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len
+new file mode 100644
+index 0000000..919a0ce
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at
+new file mode 100644
+index 0000000..3e23c2a
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i
+new file mode 100644
+index 0000000..e9287ed
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab
+new file mode 100644
+index 0000000..47b9d5d
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream
+new file mode 100644
+index 0000000..6e7a926
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len
+new file mode 100644
+index 0000000..eb52963
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at
+new file mode 100644
+index 0000000..d3e5c3b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i
+new file mode 100644
+index 0000000..6936967
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab
+new file mode 100644
+index 0000000..6c3b781
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream
+new file mode 100644
+index 0000000..6dae471
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len
+new file mode 100644
+index 0000000..1e7cecb
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len
+new file mode 100644
+index 0000000..e8c968b
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at
+new file mode 100644
+index 0000000..a4cb4ac
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i
+new file mode 100644
+index 0000000..527cfff
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin
+new file mode 100644
+index 0000000..921f902
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+new file mode 100644
+index 0000000..a68a9f0
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin differ
+diff --git a/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin
+new file mode 100644
+index 0000000..2cc5fec
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin differ
+diff --git a/node_modules/react-native-background-upload/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/react-native-background-upload/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..f193093
+--- /dev/null
++++ b/node_modules/react-native-background-upload/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,17 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml:1:1-3:12
++INJECTED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml:1:1-3:12
++	package
++		ADDED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml:2:5-35
++		INJECTED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml
++	xmlns:android
++		ADDED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml:1:11-69
++uses-sdk
++INJECTED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml
++INJECTED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from /Users/sohaibiii/projects/safarway_mobile/node_modules/react-native-background-upload/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/react-native-background-upload/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-background-upload/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100644
+index 0000000..3c49815
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/META-INF/react-native-background-upload_debug.kotlin_module b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/META-INF/react-native-background-upload_debug.kotlin_module
+new file mode 100644
+index 0000000..3aa6361
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/META-INF/react-native-background-upload_debug.kotlin_module differ
+diff --git a/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/GlobalRequestObserverDelegate.class b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/GlobalRequestObserverDelegate.class
+new file mode 100644
+index 0000000..96e23aa
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/GlobalRequestObserverDelegate.class differ
+diff --git a/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/NotificationActions.class b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/NotificationActions.class
+new file mode 100644
+index 0000000..7c962a2
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/NotificationActions.class differ
+diff --git a/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/NotificationActionsReceiver.class b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/NotificationActionsReceiver.class
+new file mode 100644
+index 0000000..9f52485
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/NotificationActionsReceiver.class differ
+diff --git a/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/UploaderModule$startUpload$1.class b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/UploaderModule$startUpload$1.class
+new file mode 100644
+index 0000000..a444158
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/UploaderModule$startUpload$1.class differ
+diff --git a/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/UploaderModule.class b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/UploaderModule.class
+new file mode 100644
+index 0000000..e9057ef
+Binary files /dev/null and b/node_modules/react-native-background-upload/android/build/tmp/kotlin-classes/debug/com/vydia/RNUploader/UploaderModule.class differ

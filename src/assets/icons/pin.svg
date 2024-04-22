@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>icons2/16/pin</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icons2/16/pin" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M8.10764854,13.8315825 C10.4062532,10.4128801 11.5555556,7.96284642 11.5555556,6.48148148 C11.5555556,4.0064276 9.64032921,2 7.27777778,2 C4.91522635,2 3,4.0064276 3,6.48148148 C3,7.96284347 4.14929776,10.4128703 6.44789329,13.8315621 L6.4478634,13.8315822 C6.75603144,14.2899192 7.37740661,14.4116553 7.83574368,14.1034872 C7.94311467,14.0312952 8.03545641,13.9389535 8.10764854,13.8315825 Z"
+              id="Oval" stroke="currentColor"></path>
+        <ellipse id="Oval" stroke="currentColor" cx="7.375" cy="6.76851852" rx="2.04166667" ry="2.13888889"></ellipse>
+    </g>
+</svg>

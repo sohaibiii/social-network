@@ -1,0 +1,14 @@
+git_url("git@bitbucket.org:safarway_mobile/safarway_mobile_certificate_repo.git")
+# git_url("https://bitbucket.org/safarway_mobile/safarway_mobile_certificate_repo.git")
+
+storage_mode("git")
+
+type("development") # The default type, can be: appstore, adhoc, enterprise or development
+
+app_identifier(["com.safarway.app", "com.safarway.dev"])
+# username("user@fastlane.tools") # Your Apple Developer Portal username
+
+# For all available options run `fastlane match --help`
+# Remove the # in the beginning of the line to enable the other options
+
+# The docs are available on https://docs.fastlane.tools/actions/match

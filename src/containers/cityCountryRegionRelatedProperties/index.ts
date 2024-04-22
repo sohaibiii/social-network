@@ -1,0 +1,2 @@
+import CityCountryRegionRelatedPropertiesScreen from "./CityCountryRegionRelatedProperties";
+export default CityCountryRegionRelatedPropertiesScreen;

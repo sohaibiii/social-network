@@ -1,0 +1,250 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+fastlane_require 'dotenv'
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  desc "Build Development"
+  lane :buildDev do |options|
+    # gradle(task: 'clean')
+    increment_version_code(
+      gradle_file_path: "app/build.gradle",
+      version_code: options[:build_number]
+    )
+    gradle(
+      task: 'assemble',
+      build_type: 'Debug',
+      print_command: false,
+      system_properties: {
+        "ENVFILE": ".env.dev"
+      }
+    )
+    firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID"],
+        firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+        groups: ENV["FIREBASE_GROUPS"],
+        release_notes:  ENV["FIREBASE_RELEASE_NOTES"]
+    )
+  end
+
+  desc "Build Stage"
+  lane :buildStage do |options|
+    # gradle(task: 'clean')
+    increment_version_code(
+      gradle_file_path: "app/build.gradle",
+      version_code: options[:build_number]
+    )
+    gradle(
+      task: 'assemble',
+      build_type: 'Stage',
+      print_command: false,
+      system_properties: {
+        "ENVFILE": ".env.stage"
+      }
+    )
+    firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID"],
+        firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+        groups: ENV["FIREBASE_GROUPS"],
+        release_notes:  ENV["FIREBASE_RELEASE_NOTES"]
+    )
+  end
+
+  desc "Build Bump current version"
+  lane :buildBumpCurrentVersion do |options|
+    # gradle(task: 'clean')
+
+    previous_build_number = google_play_track_version_codes(
+      track: "internal",
+    )[0]
+
+    current_build_number = previous_build_number + 1
+
+    increment_version_code(
+      gradle_file_path: "app/build.gradle",
+      version_code: current_build_number
+    )
+
+    previous_release_name = google_play_track_release_names(
+      track: "internal",
+    )[0]
+
+    increment_version_name(
+      gradle_file_path: "app/build.gradle",
+      version_name: previous_release_name
+    )
+    
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      print_command: false,
+      system_properties: {
+        "ENVFILE": ".env.production"
+      }
+    )
+   
+    upload_to_play_store(track: 'internal',
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
+      skip_upload_apk: false,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_aab: false,
+    )
+
+  end
+
+  desc "Build Release Patch"
+  lane :buildReleasePatch do |options|
+    # gradle(task: 'clean')
+    previous_build_number = google_play_track_version_codes(
+      track: "internal",
+    )[0]
+
+    current_build_number = previous_build_number + 1
+
+    increment_version_code(
+      gradle_file_path: "app/build.gradle",
+      version_code: current_build_number
+    )
+
+    increment_version_name(
+      gradle_file_path: "app/build.gradle",
+      bump_type: "patch"
+    )
+    
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      print_command: false,
+      system_properties: {
+        "ENVFILE": ".env.production"
+      }
+    )
+   
+    upload_to_play_store(track: 'internal',
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
+      skip_upload_apk: false,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_aab: false,
+    )
+
+  end
+
+  desc "Build Release Minor"
+  lane :buildReleaseMinor do |options|
+    # gradle(task: 'clean')
+    previous_build_number = google_play_track_version_codes(
+      track: "internal",
+    )[0]
+
+    current_build_number = previous_build_number + 1
+
+    increment_version_code(
+      gradle_file_path: "app/build.gradle",
+      version_code: current_build_number
+    )
+
+    increment_version_name(
+      gradle_file_path: "app/build.gradle",
+      bump_type: "minor"
+    )
+    
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      print_command: false,
+      system_properties: {
+        "ENVFILE": ".env.production"
+      }
+    )
+   
+    upload_to_play_store(track: 'internal',
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
+      skip_upload_apk: false,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_aab: false,
+    )
+
+  end
+
+  desc "Build Release Major"
+  lane :buildReleaseMajor do |options|
+    # gradle(task: 'clean')
+    previous_build_number = google_play_track_version_codes(
+      track: "internal",
+    )[0]
+
+    current_build_number = previous_build_number + 1
+
+    increment_version_code(
+      gradle_file_path: "app/build.gradle",
+      version_code: current_build_number
+    )
+
+    increment_version_name(
+      gradle_file_path: "app/build.gradle",
+      bump_type: "major"
+    )
+    
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      print_command: false,
+      system_properties: {
+        "ENVFILE": ".env.production"
+      }
+    )
+   
+    upload_to_play_store(track: 'internal',
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
+      skip_upload_apk: false,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_aab: false,
+    )
+
+  end
+
+end
+
+
+
